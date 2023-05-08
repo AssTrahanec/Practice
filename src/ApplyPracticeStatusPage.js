@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
 import Navbar from "./NavBar";
-
 const { Title, Text } = Typography;
 
-const ApplyPracticeStatus = () => {
+const ApplyPracticeStatusPage = () => {
+
     const applicationStatus = {
         status: 'Одобрена',
         practiceTitle: 'Название практики',
@@ -51,4 +51,4 @@ const ApplyPracticeStatus = () => {
     );
 }
 
-export default ApplyPracticeStatus;
+export default ApplyPracticeStatusPage;
