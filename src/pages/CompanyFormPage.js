@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Select, DatePicker, Button } from 'antd';
 import { useAuth } from '../AuthContext';
+import NavBar from "../NavBar";
 const { Option } = Select;
 
 const CompanyFormPage = () => {
@@ -16,6 +17,8 @@ const CompanyFormPage = () => {
     };
 
     return (
+        <div>
+            <NavBar/>
         <div style={{ padding: '50px' }}>
             <h1>Заполните информаци о предприятии</h1>
             {submitted ? (
@@ -107,6 +110,7 @@ const CompanyFormPage = () => {
                 </Form>
             )}
         </div>
+    </div>
     );
 }
 

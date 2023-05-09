@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation  } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import { HomeOutlined, FileDoneOutlined } from '@ant-design/icons';
+import { HomeOutlined, FileDoneOutlined, FileSearchOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
@@ -15,6 +15,12 @@ const Navbar = () => {
                 </Menu.Item>
                 <Menu.Item key="apply-practice-status" icon={<FileDoneOutlined />}>
                     <Link to="/apply-practice-status">Статус заявки и информация о практике</Link>
+                </Menu.Item>
+                <Menu.Item key="requests" icon={<FileSearchOutlined />}>
+                    <Link to="/StudentRequests">Список заявок</Link>
+                </Menu.Item>
+                <Menu.Item key="form-page" icon={<FileAddOutlined />}>
+                    <Link to="/form-page">Добавить компанию</Link>
                 </Menu.Item>
             </Menu>
         </Header>

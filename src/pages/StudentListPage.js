@@ -12,7 +12,6 @@ const students = [
         StudentPhoneNumber: '+1-123-456-7890',
         Skills: ['JavaScript', 'React', 'Node.js'],
         Experience: '2 years',
-        OverallGPA: 3.8,
         LanguageSkills: ['English', 'Spanish'],
         ProjectsLink: 'https://github.com/johnsmith',
         status: 'pending',

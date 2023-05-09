@@ -20,7 +20,6 @@ const StudentCard = ({ student, onAccept, onReject }) => {
             <p>Phone: {student.StudentPhoneNumber}</p>
             <p>Skills: {student.Skills.join(', ')}</p>
             <p>Experience: {student.Experience}</p>
-            <p>OverallGPA: {student.OverallGPA}</p>
             <p>Language Skills: {student.LanguageSkills.join(', ')}</p>
             <p>Projects Link: {student.ProjectsLink}</p>
             {student.status === 'rejected' && <Tag color="red">Rejected</Tag>}

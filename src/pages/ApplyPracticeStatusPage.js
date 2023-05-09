@@ -1,11 +1,11 @@
 import React from 'react';
-import { Card, Typography } from 'antd';
+import { Row, Col } from 'antd';
 import Navbar from "../NavBar";
-const { Title, Text } = Typography;
+import RequestStatusCard from "../RequestStatusCard";
 
-const ApplyPracticeStatusPage = () => {
-
-    const applicationStatus = {
+const requests = [
+    {
+        id: 1,
         status: 'Одобрена',
         practiceTitle: 'Название практики',
         practiceDuration: '3 месяца',
@@ -14,41 +14,41 @@ const ApplyPracticeStatusPage = () => {
         supervisor: 'Имя руководителя',
         contactEmail: 'example@example.com',
         contactPhone: '+1234567890',
-    };
+    },
+    {
+        id: 2,
+        status: 'В ожидании',
+        practiceTitle: 'Название практики 2',
+        practiceDuration: '4 месяца',
+        practiceDescription: 'Описание практики 2',
+        company: 'Название предприятия 2',
+        supervisor: 'Имя руководителя 2',
+        contactEmail: 'example2@example.com',
+        contactPhone: '+0987654321',
+    },
+    // Добавьте здесь данные для других заявок, если необходимо
+];
+const sortedRequests = [
+    ...requests.filter((request) => request.status === "Одобрена"),
+    ...requests.filter((request) => request.status === "В ожидании"),
+    ...requests.filter((request) => request.status === "Отклонена"),
+];
 
+const RequestsPage = () => {
     return (
         <div>
-            <Navbar/>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Card style={{ width: 400 }}>
-                    <Title level={4}>Статус заявки: {applicationStatus.status}</Title>
-                    <Title level={5}>Информация о практике:</Title>
-                    <Text strong>Название практики:</Text>
-                    <Text>{applicationStatus.practiceTitle}</Text>
-                    <br />
-                    <Text strong>Длительность практики:</Text>
-                    <Text>{applicationStatus.practiceDuration}</Text>
-                    <br />
-                    <Text strong>Описание практики:</Text>
-                    <Text>{applicationStatus.practiceDescription}</Text>
-                    <br />
-                    <Title level={5}>Информация о предприятии:</Title>
-                    <Text strong>Название предприятия:</Text>
-                    <Text>{applicationStatus.company}</Text>
-                    <br />
-                    <Text strong>Руководитель:</Text>
-                    <Text>{applicationStatus.supervisor}</Text>
-                    <br />
-                    <Text strong>Контактный email:</Text>
-                    <Text>{applicationStatus.contactEmail}</Text>
-                    <br />
-                    <Text strong>Контактный телефон:</Text>
-                    <Text>{applicationStatus.contactPhone}</Text>
-                </Card>
+            <Navbar />
+            <div style={{ padding: "24px" }}>
+                <Row gutter={[24, 24]}>
+                    {sortedRequests.map((request) => (
+                        <Col span={8} key={request.id}>
+                            <RequestStatusCard request={request} />
+                        </Col>
+                    ))}
+                </Row>
             </div>
         </div>
-
     );
-}
+};
 
-export default ApplyPracticeStatusPage;
+export default RequestsPage;
