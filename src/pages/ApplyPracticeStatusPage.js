@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
-import Navbar from "./NavBar";
+import Navbar from "../NavBar";
 const { Title, Text } = Typography;
 
 const ApplyPracticeStatusPage = () => {

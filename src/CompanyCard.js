@@ -30,6 +30,27 @@ const CompanyCard = ({ company }) => {
         >
             <div>
                 <Title level={4}>{company.name}</Title>
+                <Text>
+                    <strong>Необходимые навыки:</strong>
+                    <br />
+                    {company.requiredSkills}
+                    <br />
+                    <br />
+                </Text>
+                <Text>
+                    <strong>Оплата:</strong>
+                    <br />
+                    {company.payment}
+                    <br />
+                    <br />
+                </Text>
+                <Text>
+                    <strong>Продолжительность:</strong>
+                    <br />
+                    {company.duration}
+                    <br />
+                    <br />
+                </Text>
                 {isExpanded && (
                     <>
                         <Text>
@@ -74,13 +95,7 @@ const CompanyCard = ({ company }) => {
                             <br />
                             <br />
                         </Text>
-                        <Text>
-                            <strong>Продолжительность:</strong>
-                            <br />
-                            {company.duration}
-                            <br />
-                            <br />
-                        </Text>
+
                         <Text>
                             <strong>Рабочие часы:</strong>
                             <br />
@@ -88,13 +103,7 @@ const CompanyCard = ({ company }) => {
                             <br />
                             <br />
                         </Text>
-                        <Text>
-                            <strong>Оплата:</strong>
-                            <br />
-                            {company.payment}
-                            <br />
-                            <br />
-                        </Text>
+
                         <Text>
                             <strong>Сумма оплаты:</strong>
                             <br />
@@ -109,13 +118,7 @@ const CompanyCard = ({ company }) => {
                             <br />
                             <br />
                         </Text>
-                        <Text>
-                            <strong>Необходимые навыки:</strong>
-                            <br />
-                            {company.requiredSkills}
-                            <br />
-                            <br />
-                        </Text>
+
                         <Text>
                             <strong>Ожидания:</strong>
                             <br />

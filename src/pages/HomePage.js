@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Typography } from 'antd';
-import Navbar from "./NavBar";
-import CompanyCard from "./CompanyCard";
+import Navbar from "../NavBar";
+import CompanyCard from "../CompanyCard";
 
 const HomePage = () => {
     const companies = [
