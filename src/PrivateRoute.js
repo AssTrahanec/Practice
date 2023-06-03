@@ -1,13 +1,14 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { Outlet, Navigate } from 'react-router-dom';
+import { useAuth } from "./utils/hook";
 
-const PrivateRoute = ({ children }) => {
-    const { isLoggedIn } = useAuth(); // Access the authentication status from your AuthContext
+const PrivateRoute = () => {
+    const auth = useAuth();
+    console.log('auth', auth);
 
-    // If authorized, return the child components
-    // If not, navigate to the login page
-    return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+    return (
+        auth ? <Outlet /> : <Navigate to="/login" />
+    );
 };
 
 export default PrivateRoute;

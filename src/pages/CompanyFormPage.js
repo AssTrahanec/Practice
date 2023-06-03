@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Select, DatePicker, Button } from 'antd';
-import { useAuth } from '../AuthContext';
-import NavBar from "../NavBar";
+import { useAuth } from '../AuthProvider';
+import NavBar from "../components/NavBar";
 const { Option } = Select;
 
 const CompanyFormPage = () => {

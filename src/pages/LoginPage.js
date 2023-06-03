@@ -1,47 +1,36 @@
 import React from 'react';
 import { Form, Input, Button, Card, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../AuthContext';
+import {useAppDispatch, useAppSelector} from "../utils/hook";
+import {loginUser} from "../store/thunks/auth";
 const { Title } = Typography;
 
-const LoginPage = () => {
-    const { login } = useAuth();
-    const users = [
-        {
-         login: "student",
-         password:"student",
-         role: "student"
-        },
-        {
-            login: "company",
-            password:"company",
-            role: "company"
-        }];
-    const [error, setError] = useState(null);
+const LoginPage = ({ history }) => {
+    const dispatch = useAppDispatch();
+    const [form] = Form.useForm();
     const navigate = useNavigate();
-    const onFinish = (values) => {
-        console.log('Received values:', values);
-        const { email, password } = values;
-
-        const user = users.find(user => user.login === email && user.password === password);
-
-        if (user) {
-            login();
-            navigate('/home');
-        }else {
-            setError("Неверный логин или пароль");
+    const [error, setError] = useState(null);
+    const loading = useAppSelector(state => state.auth.isLoading)
+    const onFinish = async (values) => {
+        try {
+            //const response = await axios.post(API_ADDRESS + '/auth/sign-in', values);
+                await dispatch(loginUser(values))
+        } catch (error) {
+            setError('Ошибка при выполнении запроса');
         }
+        console.log("hui", 'sssss')
+        navigate('/'); // Переход на другую страницу после успешной авторизации
     };
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Card style={{ width: 300 }}>
                 <Title level={4} style={{ textAlign: 'center', marginBottom: 24 }}>Вход</Title>
-                <Form name="login" onFinish={onFinish}>
+                <Form form={form} name="login-form" onFinish={onFinish}>
                     <Form.Item
-                        name="email"
+                        name="login"
                         rules={[{ required: true, message: 'Пожалуйста, введите ваш email' }]}
                     >
                         <Input prefix={<UserOutlined />} placeholder="Email" />
@@ -53,8 +42,8 @@ const LoginPage = () => {
                         <Input.Password prefix={<LockOutlined />} placeholder="Пароль" />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" block>
-                            Войти
+                        <Button type="primary" loading={loading} htmlType="submit" block>
+                            {loading ? 'Загрузка...' : 'Войти'}
                         </Button>
                     </Form.Item>
                     {error && <div style={{ color: 'red', marginBottom: 10 }}>{error}</div>}

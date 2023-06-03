@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import Navbar from "../NavBar";
-import RequestStatusCard from "../RequestStatusCard";
+import Navbar from "../components/NavBar";
+import RequestStatusCard from "../components/RequestStatusCard";
 
 const requests = [
     {

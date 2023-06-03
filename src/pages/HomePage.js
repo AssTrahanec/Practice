@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Typography } from 'antd';
-import Navbar from "../NavBar";
-import CompanyCard from "../CompanyCard";
-
+import Navbar from "../components/NavBar";
+import CompanyCard from "../components/CompanyCard";
+import axios from "axios";
+import {API_ADDRESS} from "../ApiConfig";
 const HomePage = () => {
     const companies = [
         {
@@ -37,11 +38,24 @@ const HomePage = () => {
         },
     ];
     const [expandedCardId, setExpandedCardId] = useState(null);
-
+    //const [companies, setCompanies] = useState([]);
     const handleCardClick = (cardId) => {
         setExpandedCardId(cardId);
     };
-
+    // useEffect(() => {
+    //     const fetchCompanies = async () => {
+    //         try {
+    //             const response = await axios.get(API_ADDRESS+'/api/companies'); // Замените на ваш API endpoint для получения списка компаний
+    //             const fetchedCompanies = response.data; // Предполагается, что данные приходят в формате JSON
+    //             setCompanies(fetchedCompanies);
+    //             console.log("1111")
+    //         } catch (error) {
+    //             console.error('Error fetching companies:', error);
+    //         }
+    //     };
+    //
+    //     fetchCompanies();
+    // }, []);
     return (
         <div>
             <Navbar />

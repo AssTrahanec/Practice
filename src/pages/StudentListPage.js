@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Row, Col} from 'antd';
-import StudentCard from "../StudentCard";
-import NavBar from "../NavBar";
+import StudentCard from "../components/StudentCard";
+import NavBar from "../components/NavBar";
 
 const students = [
     {

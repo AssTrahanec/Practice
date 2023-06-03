@@ -1,15 +1,10 @@
 import React from 'react';
+import { AuthProvider } from './AuthProvider';
 import AppRouter from './AppRouter';
-import { AuthProvider } from './AuthContext';
-
 const App = () => {
     return (
-            <div>
-                {/* Other components in your application */}
-                <AppRouter /> {/* Render the router */}
-            </div>
+            <AppRouter />
     );
 }
-
 
 export default App;
