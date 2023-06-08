@@ -14,14 +14,14 @@ const StudentCard = ({ student, onAccept, onReject }) => {
             style={{ marginBottom: 16, backgroundColor: student.status === 'rejected' ? '#ffe6e6' : 'white' }}
             actions={student.status === 'accepted' ? [<Tag color="green">Accepted</Tag>] : []}
         >
-            <p>Specialty: {student.Specialty}</p>
-            <p>AvgMark: {student.AvgMark}</p>
-            <p>Email: {student.StudentEmail}</p>
-            <p>Phone: {student.StudentPhoneNumber}</p>
-            <p>Skills: {student.Skills.join(', ')}</p>
-            <p>Experience: {student.Experience}</p>
-            <p>Language Skills: {student.LanguageSkills.join(', ')}</p>
-            <p>Projects Link: {student.ProjectsLink}</p>
+            <p>Specialty: {student.speciality}</p>
+            <p>AvgMark: {student.avg_mark}</p>
+            <p>Email: {student.student_email}</p>
+            <p>Phone: {student.student_phone_number}</p>
+            <p>Skills: {student.skills}</p>
+            <p>Experience: {student.work_experience}</p>
+            <p>Language Skills: {student.language_skills}</p>
+            <p>Projects Link: {student.projects_link}</p>
             {student.status === 'rejected' && <Tag color="red">Rejected</Tag>}
             {student.status === 'pending' && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>

@@ -1,88 +1,59 @@
-import {useState} from 'react';
-import {Row, Col} from 'antd';
+import { useEffect, useState } from 'react';
+import { Row, Col } from 'antd';
 import StudentCard from "../components/StudentCard";
 import NavBar from "../components/NavBar";
-
-const students = [
-    {
-        Specialty: 'Computer Science',
-        AvgMark: 4.5,
-        StudentName: 'John Smith',
-        StudentEmail: 'john.smith@example.com',
-        StudentPhoneNumber: '+1-123-456-7890',
-        Skills: ['JavaScript', 'React', 'Node.js'],
-        Experience: '2 years',
-        LanguageSkills: ['English', 'Spanish'],
-        ProjectsLink: 'https://github.com/johnsmith',
-        status: 'pending',
-    },
-    {
-        Specialty: 'Engineering',
-        AvgMark: 4.0,
-        StudentName: 'Alice Johnson',
-        StudentEmail: 'alice.johnson@example.com',
-        StudentPhoneNumber: '+1-234-567-8901',
-        Skills: ['Python', 'MATLAB', 'CAD'],
-        Experience: '1 year',
-        OverallGPA: 3.5,
-        LanguageSkills: ['English', 'German'],
-        ProjectsLink: 'https://github.com/alicejohnson',
-        status: 'pending',
-    },
-    {
-        Specialty: 'Marketing',
-        AvgMark: 4.2,
-        StudentName: 'Bob Lee',
-        StudentEmail: 'bob.lee@example.com',
-        StudentPhoneNumber: '+1-345-678-9012',
-        Skills: ['Social Media', 'SEO', 'Content Creation'],
-        Experience: '1.5 years',
-        OverallGPA: 3.7,
-        LanguageSkills: ['English', 'French'],
-        ProjectsLink: 'https://github.com/boblee',
-        status: 'pending',
-    },
-    {
-        Specialty: 'Business',
-        AvgMark: 3.8,
-        StudentName: 'Jane Doe',
-        StudentEmail: 'jane.doe@example.com',
-        StudentPhoneNumber: '+1-456-789-0123',
-        Skills: ['Accounting', 'Finance', 'Business Strategy'],
-        Experience: '2.5 years',
-        OverallGPA: 3.9,
-        LanguageSkills: ['English', 'Mandarin'],
-        ProjectsLink: 'https://github.com/janedoe',
-        status: 'pending',
-    },
-    {
-        Specialty: 'Design',
-        AvgMark: 4.3,
-        StudentName: 'Samuel Kim',
-        StudentEmail: 'samuel.kim@example.com',
-        StudentPhoneNumber: '+1-567-890-1234',
-        Skills: ['Photoshop', 'Illustrator', 'InDesign'],
-        Experience: '2 years',
-        OverallGPA: 3.8,
-        LanguageSkills: ['English', 'Korean'],
-        ProjectsLink: 'https://github.com/samuelkim',
-        status: 'pending',
-    },
-];
+import { getRequests } from "../store/thunks/assests";
+import { useAppDispatch, useAppSelector } from "../utils/hook";
+import {instanceAuth} from "../utils/axios";
 
 const StudentsPage = () => {
-    const [studentsList, setStudentsList] = useState(students);
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(getRequests());
+    }, []);
 
-    const handleAccept = (student) => {
+    const requests = useAppSelector(state => state.assets.requests);
+    const [studentsList, setStudentsList] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const studentsData = [];
+
+            for (const request of requests) {
+                const response = await instanceAuth.get(`api/students/${request.student_id}`);
+                const student = response.data
+                const mergedStudent = { ...student, ...request };
+                studentsData.push(mergedStudent);
+            }
+
+            setStudentsList(studentsData);
+        };
+
+        fetchData();
+    }, [requests]);
+    console.log(studentsList)
+
+    const updateRequestStatus = async (requestId, status) => {
+        try {
+            const response = await instanceAuth.put(`api/requests/${requestId}`, { status })
+            console.log('Request status updated successfully');
+        } catch (error) {
+            console.log('Failed to update request status', error);
+        }
+    };
+
+    const handleAccept = async (student) => {
         const newStudentsList = studentsList.filter((s) => s !== student);
         student.status = 'accepted';
         setStudentsList([...newStudentsList, student]);
+        await updateRequestStatus(student.id, 'accepted');
     };
 
-    const handleReject = (student) => {
+    const handleReject = async (student) => {
         const newStudentsList = studentsList.filter((s) => s !== student);
         student.status = 'rejected';
         setStudentsList([...newStudentsList, student]);
+        await updateRequestStatus(student.id, 'rejected');
     };
 
     const rejectedStudents = studentsList.filter((student) =>
@@ -99,7 +70,7 @@ const StudentsPage = () => {
 
     return (
         <div>
-            <NavBar/>
+            <NavBar />
             <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                     <h2>Pending students</h2>

@@ -15,7 +15,6 @@ export const authSlice = createSlice({
             sessionStorage.clear()
             state.user = null;
             state.isLoggedIn = false;
-            console.log(state.isLoggedIn)
         },
     },
     extraReducers: (builder) => {
@@ -26,6 +25,7 @@ export const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.user = action.payload;
+                console.log(state.user)
                 state.isLoggedIn = true;
                 state.isLoading = false;
             })

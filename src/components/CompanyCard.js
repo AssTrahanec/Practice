@@ -48,7 +48,7 @@ const CompanyCard = ({company}) => {
                     <Text>
                         <strong>Необходимые навыки:</strong>
                         <br/>
-                        {company.requiredSkills}
+                        {company.required_skills}
                         <br/>
                         <br/>
                     </Text>
@@ -85,14 +85,14 @@ const CompanyCard = ({company}) => {
                             <Text>
                                 <strong>Контактное лицо:</strong>
                                 <br/>
-                                {company.contactPerson}
+                                {company.contact_person}
                                 <br/>
                                 <br/>
                             </Text>
                             <Text>
                                 <strong>Номер телефона:</strong>
                                 <br/>
-                                {company.phoneNumber}
+                                {company.phone_number}
                                 <br/>
                                 <br/>
                             </Text>
@@ -114,22 +114,22 @@ const CompanyCard = ({company}) => {
                             <Text>
                                 <strong>Рабочие часы:</strong>
                                 <br/>
-                                {company.workingHours}
+                                {company.working_hours}
                                 <br/>
                                 <br/>
                             </Text>
 
-                            <Text>
+                            {company.is_payment ?<Text>
                                 <strong>Сумма оплаты:</strong>
                                 <br/>
-                                {company.paymentAmount}
+                                {company.payment_amount}
                                 <br/>
                                 <br/>
-                            </Text>
+                            </Text> : ""}
                             <Text>
                                 <strong>Дата начала:</strong>
                                 <br/>
-                                {company.startDate}
+                                {company.start_date}
                                 <br/>
                                 <br/>
                             </Text>
@@ -158,7 +158,7 @@ const CompanyCard = ({company}) => {
                             <Text>
                                 <strong>Дополнительная информация:</strong>
                                 <br/>
-                                {company.additionalInformation}
+                                {company.additional_information}
                                 <br/>
                                 <br/>
                             </Text>

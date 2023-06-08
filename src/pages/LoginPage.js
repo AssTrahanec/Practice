@@ -15,13 +15,12 @@ const LoginPage = ({ history }) => {
     const loading = useAppSelector(state => state.auth.isLoading)
     const onFinish = async (values) => {
         try {
-            //const response = await axios.post(API_ADDRESS + '/auth/sign-in', values);
-                await dispatch(loginUser(values))
+            await dispatch(loginUser(values))
+            navigate('/');
         } catch (error) {
             setError('Ошибка при выполнении запроса');
         }
-        console.log("hui", 'sssss')
-        navigate('/'); // Переход на другую страницу после успешной авторизации
+         // Переход на другую страницу после успешной авторизации
     };
 
     return (

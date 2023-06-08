@@ -9,8 +9,7 @@ export const useAppSelector = (selector) => {
 };
 
 export const useAuth = () => {
-    console.log(sessionStorage.getItem('token'))
-    console.log("hui", sessionStorage.getItem('token') !== null)
+
     return sessionStorage.getItem('token') !== null;
 };
 

@@ -3,11 +3,13 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { Layout, Menu, Button, Space } from 'antd';
 import { HomeOutlined, FileDoneOutlined, FileSearchOutlined, FileAddOutlined } from '@ant-design/icons';
 import {logout} from "../store/slice/auth";
-import { useAppDispatch } from "../utils/hook";
+import {useAppDispatch, useAppSelector} from "../utils/hook";
 
 const { Header } = Layout;
 
 const Navbar = () => {
+
+    const role = useAppSelector(state => state.auth.role);
     const dispatch = useAppDispatch()
     const location = useLocation();
     //const { logout } = useAuth();

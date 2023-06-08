@@ -1,7 +1,14 @@
 import axios from "axios";
 
-export const instance = axios.create({
+export const instanceAuth = axios.create({
     baseURL: 'http://localhost:8080',
     timeout: 1000,
-    headers: {'X-Custom-Header': 'foobar'}
+});
+
+instanceAuth.interceptors.request.use((config) => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
