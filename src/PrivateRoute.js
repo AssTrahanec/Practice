@@ -1,31 +1,38 @@
-import React from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-import { useAppSelector } from "./utils/hook";
+import { useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-const PrivateRoute = () => {
-    const userRole = useAppSelector(state => state.auth.user?.role);
-    console.log(userRole)
-    // Определите массивы допустимых путей для каждой роли
-    const studentAllowedPaths = ['/', 'apply-practice-status'];
-    const companyAllowedPaths = ['form-page', 'student-requests'];
+const PrivateRoute = ({ isAuthenticated, role, children, ...rest }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    // Проверьте, имеет ли текущая роль доступ к текущему пути
-    const isAllowedPath = (allowedPaths) => allowedPaths.includes(window.location.pathname);
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login');
+        } else {
+            const currentPath = location.pathname;
+            console.log(currentPath);
+            console.log(isAuthenticated, role);
 
-    // Перенаправьте пользователя, если у него нет доступа к текущему пути
-    const checkAccess = () => {
-        if (userRole === 'student' && !isAllowedPath(studentAllowedPaths)) {
-            return <Navigate to="/" />;
+            switch (role) {
+                case 'student':
+                    if (currentPath !== '/' && currentPath !== '/apply-practice-status') {
+                        navigate('/');
+                    }
+                    break;
+
+                case 'company':
+                    if (currentPath !== '/form-page' && currentPath !== '/student-requests') {
+                        navigate('/student-requests');
+                    }
+                    break;
+
+                default:
+                    navigate('/error');
+            }
         }
-        if (userRole === 'company' && !isAllowedPath(companyAllowedPaths)) {
-            return <Navigate to="/student-requests" />;
-        }
-        return <Outlet />;
-    };
+    }, [isAuthenticated, role, navigate, location.pathname]);
 
-    return (
-        userRole ? checkAccess() : <Navigate to="/login" />
-    );
+    return children;
 };
 
 export default PrivateRoute;

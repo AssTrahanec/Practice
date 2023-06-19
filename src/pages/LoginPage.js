@@ -15,8 +15,14 @@ const LoginPage = ({ history }) => {
     const loading = useAppSelector(state => state.auth.isLoading)
     const onFinish = async (values) => {
         try {
-            await dispatch(loginUser(values))
-            navigate('/');
+            const data = await dispatch(loginUser(values))
+            console.log(data.payload.role)
+            if (data.payload.role ==='student') {
+                navigate('/');
+            }
+            else if(data.payload.role ==='company') {
+                navigate('/student-requests');
+            }
         } catch (error) {
             setError('Ошибка при выполнении запроса');
         }

@@ -1,0 +1,93 @@
+.company-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.company-card {
+    width: 300px;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: height 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.company-card.expanded {
+    height: auto;
+}
+
+.card-header {
+    margin-bottom: 16px;
+}
+
+.required-skills {
+    font-weight: bold;
+}
+
+.card-content {
+    margin-bottom: 16px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.homepage-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+.company-card {
+    width: 400px;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: height 0.3s;
+    cursor: pointer;
+}
+
+.company-card.expanded {
+    height: auto;
+}
+
+.company-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.company-card-content > * {
+    margin-bottom: 16px;
+}
+
+.company-card-content > *:last-child {
+    margin-bottom: 0;
+}
+
+.company-card-content > h4 {
+    margin-bottom: 8px;
+}
+
+.company-card-content > p {
+    margin-bottom: 4px;
+}
+
+.company-card-content > button {
+    margin-top: 16px;
+}
+

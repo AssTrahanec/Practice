@@ -2,8 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { loginUser } from '../../thunks/auth';
 
 const initialState = {
-    user: {},
-    isLoggedIn: false,
+    user: {
+        token: sessionStorage.getItem("token"),
+        role: sessionStorage.getItem("role"),
+        userid: sessionStorage.getItem("userid")
+    },
+    isLoggedIn: sessionStorage.getItem("token") !== null,
     isLoading: false,
 };
 

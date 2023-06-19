@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const useAppDispatch = () => {
     return useDispatch();
@@ -9,8 +9,11 @@ export const useAppSelector = (selector) => {
 };
 
 export const useAuth = () => {
+    const isAuthenticated = useSelector((state) => state.auth.isLoggedIn);
+    const role = useSelector((state) => state.auth.user?.role);
 
-    return sessionStorage.getItem('token') !== null;
+    return {
+        isAuthenticated,
+        role,
+    };
 };
-
-

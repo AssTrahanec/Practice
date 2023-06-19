@@ -1,0 +1,40 @@
+/* CompanyCard.css */
+
+.company-card {
+    transition: 0.3s;
+    width: 600px !important;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    flex: none !important;
+    max-width: none !important;
+}
+
+
+.company-card:hover {
+    box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
+}
+
+.company-card .company-card-content {
+    padding: 20px;
+    font-size: 1em;
+}
+
+.company-card .company-card-content .ant-typography {
+    font-size: 1.2em;  /* Увеличиваем размер шрифта заголовков */
+}
+
+.expanded {
+    height: 900px;
+    overflow-y: auto;
+}
+
+.apply-button {
+    transition: 0.3s;
+    border-radius: 5px;
+    font-size: 1.2em;  /* Увеличиваем размер шрифта кнопки */
+}
+
+.apply-button:hover {
+    transform: scale(1.1);
+}

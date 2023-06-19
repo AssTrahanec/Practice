@@ -6,8 +6,10 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await instanceAuth.post('/auth/sign-in', values);
             if (response.status === 200) {
-                const { token, role } = response.data;
+                const { token, role, userid } = response.data;
                 if (token && role) {
+                    console.log(userid)
+                    sessionStorage.setItem('userid', userid)
                     sessionStorage.setItem('token', token);
                     sessionStorage.setItem('role', role);
                     return response.data;

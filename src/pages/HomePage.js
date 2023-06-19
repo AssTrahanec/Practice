@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import Navbar from "../components/NavBar";
-import CompanyCard from "../components/CompanyCard";
-import {useAppDispatch, useAppSelector} from "../utils/hook";
-import {getCompanies, getPractices} from "../store/thunks/assests";
-
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../utils/hook';
+import {getCompanies, getPractices, getPublicPractices} from '../store/thunks/assests';
+import Navbar from '../components/NavBar';
+import CompanyCard from '../components/CompanyCard';
+import { Spin, Row, Col } from 'antd';
 function innerJoinPracticesAndCompanies(practices, companies) {
     const joinedData = [];
     practices.forEach((practice) => {
@@ -15,48 +15,59 @@ function innerJoinPracticesAndCompanies(practices, companies) {
             joinedData.push(joinedItem);
         }
     });
-    console.log("joindeddata",joinedData);
+    console.log('joinedData', joinedData);
     return joinedData;
 }
+
 const HomePage = () => {
-    const companies = useAppSelector(state=> state.assets.companies)
-    const practices = useAppSelector(state => state.assets.practices)
-    // console.log("practices", practices)
-    // console.log("companies", companies)
-    const practicesToShow = innerJoinPracticesAndCompanies(companies, practices)
-
-    const isLoading = useAppSelector(state => state.assets.isLoading)
-    const dispatch = useAppDispatch()
-    useEffect(() =>{
-        dispatch(getCompanies())
-        dispatch(getPractices())
-    },[])
-
+    const { companies, practices, isLoading } = useAppSelector((state) => state.assets);
+    const dispatch = useAppDispatch();
     const [expandedCardId, setExpandedCardId] = useState(null);
+    const [practicesToShow, setPracticesToShow] = useState(null);
+    useEffect(() => {
+        dispatch(getCompanies());
+        dispatch(getPublicPractices());
+    }, []);
+    useEffect(() => {
+        if (!companies || !practices) {
+            return;
+        }
+        setPracticesToShow(innerJoinPracticesAndCompanies(companies, practices));
+    }, [companies, practices]);
+
+
     const handleCardClick = (cardId) => {
         setExpandedCardId(cardId);
     };
-    console.log("practiceToShow",practicesToShow)
+
     return (
-        <div>
+        <div className="homepage">
             <Navbar />
-            <div>
-                {isLoading ? "Загрузка..." :
-                    <div>
-                    {practicesToShow.map((company) => (
-                        <CompanyCard
-                        key={company.id}
-                    company={company}
-                    expandedCardId={expandedCardId}
-                    handleCardClick={handleCardClick}
-                    />
-                    ))}
-                    </div>}
+            <div className="homepage-content">
+                {isLoading ? (
+                    <div className="loader">
+                        <Spin size="large" />
+                    </div>
+                ) : (
+                    <Row gutter={[16, 16]}>
+                        {practicesToShow && practicesToShow.length > 0 ? (
+                            practicesToShow.map((company) => (
+                                <Col key={company.id} xs={24} sm={24} md={24} lg={24}>
+                                    <CompanyCard
+                                        company={company}
+                                        expanded={company.id === expandedCardId}
+                                        onClick={handleCardClick}
+                                    />
+                                </Col>
+                            ))
+                        ) : (
+                            <div>Нет доступных практик</div>
+                        )}
+                    </Row>
+                )}
             </div>
-
         </div>
-
     );
-}
+};
 
 export default HomePage;
