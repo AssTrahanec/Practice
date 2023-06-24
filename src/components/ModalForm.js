@@ -3,7 +3,15 @@ import { Modal, Form, Input, Button, notification } from 'antd';
 import { instanceAuth } from "../utils/axios";
 import ResumeForm from './ResumeForm';
 import {useAppDispatch, useAppSelector} from "../utils/hook";
-import {getRequests, getResume, getStudent} from "../store/thunks/assests";
+import {
+    createResume,
+    getCompanies,
+    getPublicPractices,
+    getRequests,
+    getResume,
+    getStudent,
+    updateResume, updateStudent
+} from "../store/thunks/assests";
 
 const ModalForm = ({ company, visible, onCancel, onFinish }) => {
 
@@ -29,7 +37,6 @@ const ModalForm = ({ company, visible, onCancel, onFinish }) => {
     const [resumeData, setResumeData] = useState(initialResumeData);
     const [requests, setRequests] = useState(null);
     const [pendingRequest, setPendingRequest] = useState(false)
-
     const savedData = {
         student_name: 'Иванов Иван Иванович',
         student_email: 'ivanov@example.com',
@@ -65,7 +72,6 @@ const ModalForm = ({ company, visible, onCancel, onFinish }) => {
                     request.company_id === company.company_id &&
                     request.status === "pending"
             );
-            console.log("hui",request)
 
             if (request) {
                 setPendingRequest(true)
@@ -79,7 +85,6 @@ const ModalForm = ({ company, visible, onCancel, onFinish }) => {
         let updatedResumeData = {};
         let updatedStudentData = {};
         if(student!== null){
-            console.log("student",student)
             updatedStudentData = {
                 student_name: student.student_name,
                 student_email: student.student_email,
@@ -87,20 +92,18 @@ const ModalForm = ({ company, visible, onCancel, onFinish }) => {
                 specialty: student.specialty,
                 avg_mark: student.avg_mark
             };
-            console.log("updated",updatedResumeData)
             setResumeData(updatedResumeData)
 
         }
-        if(savedRequest!== null){
+        if(savedRequest !== null && savedRequest){
             updatedResumeData = {
                 avg_mark: savedRequest.avg_mark,
                 skills: savedRequest.skills,
                 work_experience: savedRequest.work_experience,
                 projects_link: savedRequest.projects_link,
-                language_skills: savedRequest.language_skills.split(',').map((item) => item.trim()),
+                language_skills: savedRequest.language_skills && savedRequest.language_skills.split(',').map((item) => item.trim()),
             };
             setResumeData(updatedResumeData)
-            console.log("resumeData",resumeData)
         }
         if(student && savedRequest){
             updatedResumeData = {
@@ -128,18 +131,44 @@ const ModalForm = ({ company, visible, onCancel, onFinish }) => {
                     student_id: parseInt(sessionStorage.getItem("userid")),
                     status: 'pending',
                     projects_link: values.projects_link,
-                    language_skills: values.language_skills.join(', '),
+                    language_skills: values.language_skills ? values.language_skills.join(', ') : '',
                     work_experience: values.work_experience,
                     skills: values.skills
                 };
-                console.log(requestData);
+
                 const response = await instanceAuth.post("/api/requests", requestData);
-                console.log(response.data);
                 notification.success({
                     message: 'Успешно',
                     description: 'Заявка успешно добавлена.',
                     duration: 3
                 });
+                dispatch(getCompanies());
+                dispatch(getPublicPractices());
+
+                const requestDataForResume = {
+                    skills: requestData.skills,
+                    work_experience: requestData.work_experience,
+                    projects_link: requestData.projects_link,
+                    language_skills: Array.isArray(requestData.language_skills) ? requestData.language_skills.join(', ') : null,
+                    status: 'saved'
+                };
+                const studentData = {
+                    student_name: values.student_name,
+                    student_email: values.student_email,
+                    student_phone_number : values.student_phone_number,
+                    specialty: values.specialty,
+                    avg_mark: parseFloat(values.avg_mark) ? parseFloat(values.avg_mark) : null
+                };
+                const id = sessionStorage.getItem("userid");
+                dispatch(updateStudent({ studentData, id}));
+
+                if(savedRequest !== null && savedRequest) {
+                    const id = savedRequest.id
+                    dispatch(updateResume({request: requestDataForResume, id}))
+                }
+                else {
+                    dispatch(createResume(requestDataForResume))
+                }
                 onCancel();
             } catch (error) {
                 console.error(error);

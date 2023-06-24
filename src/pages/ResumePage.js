@@ -55,7 +55,6 @@ const ResumePage = () => {
         let updatedStudentData = {};
         if(student!== null){
             setEditingMode(false)
-            console.log("student",student)
                 updatedStudentData = {
                 student_name: student.student_name,
                 student_email: student.student_email,
@@ -63,11 +62,10 @@ const ResumePage = () => {
                 specialty: student.specialty,
                 avg_mark: student.avg_mark
             };
-            console.log("updated",updatedResumeData)
             setResumeData(updatedResumeData)
 
         }
-        if(savedRequest!== null){
+        if(savedRequest!== null && savedRequest){
                 updatedResumeData = {
                 avg_mark: savedRequest.avg_mark,
                 skills: savedRequest.skills,
@@ -76,7 +74,6 @@ const ResumePage = () => {
                 language_skills: savedRequest.language_skills.split(',').map((item) => item.trim()),
             };
             setResumeData(updatedResumeData)
-            console.log("resumeData",resumeData)
         }
         if(student && savedRequest){
             updatedResumeData = {
@@ -92,7 +89,6 @@ const ResumePage = () => {
 
     const handleEdit = () => {
         setEditingMode(true);
-        console.log(student);
     };
 
     const handleSave = async (data) => {
@@ -108,7 +104,7 @@ const ResumePage = () => {
             skills: data.skills,
             work_experience: data.work_experience,
             projects_link: data.projects_link,
-            language_skills: data.language_skills.join(', '),
+            language_skills: Array.isArray(data.language_skills) ? data.language_skills.join(', ') : null,
             status: 'saved'
         };
 
@@ -116,9 +112,7 @@ const ResumePage = () => {
         // Объедините studentData и id в одном объекте
         dispatch(updateStudent({ studentData, id}));
         if(savedRequest){
-            console.log("id", savedRequest)
             const id = savedRequest.id
-            console.log("requestData",requestData)
 
             dispatch(updateResume({request: requestData, id}))
 
@@ -126,7 +120,6 @@ const ResumePage = () => {
         else {
             dispatch(createResume(requestData))
         }
-        console.log(requestData)
         setResumeData(data);
         setEditingMode(false);
     };

@@ -16,12 +16,17 @@ const LoginPage = ({ history }) => {
     const onFinish = async (values) => {
         try {
             const data = await dispatch(loginUser(values))
-            console.log(data.payload.role)
             if (data.payload.role ==='student') {
                 navigate('/');
             }
             else if(data.payload.role ==='company') {
                 navigate('/student-requests');
+            }
+            else if(data.payload.role ==='university') {
+                navigate('/registration');
+            }
+            else{
+                setError('Неверные данные')
             }
         } catch (error) {
             setError('Ошибка при выполнении запроса');

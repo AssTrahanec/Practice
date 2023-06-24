@@ -5,22 +5,24 @@ import Navbar from '../components/NavBar';
 import CompanyCard from '../components/CompanyCard';
 import { Spin, Row, Col } from 'antd';
 function innerJoinPracticesAndCompanies(practices, companies) {
+    if(practices) {
     const joinedData = [];
-    practices.forEach((practice) => {
-        const companyId = practice.company_id;
-        const company = companies.find((company) => company.company_id === companyId);
+        practices.forEach((practice) => {
+            const companyId = practice.company_id;
+            const company = companies.find((company) => company.company_id === companyId);
 
-        if (company) {
-            const joinedItem = { ...practice, ...company };
-            joinedData.push(joinedItem);
-        }
-    });
-    console.log('joinedData', joinedData);
-    return joinedData;
+            if (company) {
+                const joinedItem = {...practice, ...company};
+                joinedData.push(joinedItem);
+            }
+        });
+        return joinedData;
+    }
+    return null
 }
 
 const HomePage = () => {
-    const { companies, practices, isLoading } = useAppSelector((state) => state.assets);
+    const { companies, publicPractices, isLoading } = useAppSelector((state) => state.assets);
     const dispatch = useAppDispatch();
     const [expandedCardId, setExpandedCardId] = useState(null);
     const [practicesToShow, setPracticesToShow] = useState(null);
@@ -29,11 +31,11 @@ const HomePage = () => {
         dispatch(getPublicPractices());
     }, []);
     useEffect(() => {
-        if (!companies || !practices) {
+        if (!companies || !publicPractices) {
             return;
         }
-        setPracticesToShow(innerJoinPracticesAndCompanies(companies, practices));
-    }, [companies, practices]);
+        setPracticesToShow(innerJoinPracticesAndCompanies(companies, publicPractices));
+    }, [companies, publicPractices]);
 
 
     const handleCardClick = (cardId) => {

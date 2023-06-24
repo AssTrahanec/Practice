@@ -25,7 +25,11 @@ const PrivateRoute = ({ isAuthenticated, role, children, ...rest }) => {
                         navigate('/student-requests');
                     }
                     break;
-
+                case 'university':
+                    if (currentPath !== '/registration') {
+                        navigate('/registration');
+                    }
+                    break;
                 default:
                     navigate('/error');
             }

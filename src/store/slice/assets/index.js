@@ -3,12 +3,11 @@ import {
     getCompanies, getCompanyOfCurrentUser, getPracticeOfCurrentUser,
     getPractices, getPublicPractices,
     getRequests, getResume,
-    getStudent, updateCompany, updatePractice,
+    getStudent, signUp, updateCompany, updatePractice,
     updateRequest, updateResume,
     updateStudent
 } from "../../thunks/assests";
-import {createSlice} from "@reduxjs/toolkit";
-
+import {createAction, createSlice} from "@reduxjs/toolkit";
 const initialState = {
     companies: [],
     practices: [],
@@ -17,13 +16,17 @@ const initialState = {
     resume : null,
     companyPracticeInfo : null,
     companyInfo : null,
-    isLoading: false
+    isLoading: false,
+    publicPractices : [],
 }
 
 const assetsSlice = createSlice({
     name: 'assets',
     initialState,
-    reducers: {},
+    reducers: { resetState(state) {
+            Object.assign(state, initialState);
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getCompanies.fulfilled, (state, action) => {
@@ -47,7 +50,7 @@ const assetsSlice = createSlice({
                 state.companyInfo = action.payload;
             })
             .addCase(getPublicPractices.fulfilled, (state, action) => {
-                state.practices = action.payload;
+                state.publicPractices = action.payload;
             })
             .addCase(getRequests.fulfilled, (state, action) => {
                 state.requests = action.payload;
@@ -57,22 +60,18 @@ const assetsSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(getStudent.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.student = action.payload;
             })
             .addCase(updateStudent.fulfilled, (state, action) => {
                 state.student = action.payload;
             })
             .addCase(updateResume.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.resume = action.payload
             })
             .addCase(updateCompany.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.companyInfo = action.payload
             })
             .addCase(updatePractice.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.practiceInfo = action.payload
             })
             .addCase(createResume.fulfilled, (state, action) => {
@@ -80,8 +79,11 @@ const assetsSlice = createSlice({
             })
             .addCase(getResume.fulfilled, (state, action) => {
                 state.resume = action.payload
+            })
+            .addCase(signUp.fulfilled, (state, action) => {
+                console.log(action.payload)
             });
     },
 });
-
+export const { resetState } = assetsSlice.actions;
 export default assetsSlice.reducer;

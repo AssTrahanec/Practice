@@ -1,27 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Row, Col, Spin} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Spin } from 'antd';
+import { Typography } from 'antd';
 import Navbar from "../components/NavBar";
-import RequestStatusCard from "../components/RequestStatusCard";
-import {useAppDispatch, useAppSelector} from "../utils/hook";
-import {getCompanies, getPractices, getRequests} from "../store/thunks/assests";
+import RequestCard from "../components/RequestCard";
+import { useAppDispatch, useAppSelector } from "../utils/hook";
+import { getCompanies, getPractices, getRequests } from "../store/thunks/assests";
+
+const { Title } = Typography;
 
 const RequestsPage = () => {
-    const dispatch = useAppDispatch()
-    useEffect(() =>{
-        dispatch(getCompanies())
-        dispatch(getRequests())
-        dispatch(getPractices())
-    },[])
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(getCompanies());
+        dispatch(getRequests());
+        dispatch(getPractices());
+    }, []);
 
     const [joinedRequests, setJoinedRequests] = useState(null);
 
-    const isLoading = useAppSelector(state => state.assets.isLoading)
-    const practices = useAppSelector(state => state.assets.practices)
-    const requests = useAppSelector(state => state.assets.requests)
-    const companies = useAppSelector(state => state.assets.companies)
-    console.log("request", requests)
-    console.log("companies", companies)
-    console.log("practices", practices)
+    const isLoading = useAppSelector(state => state.assets.isLoading);
+    const practices = useAppSelector(state => state.assets.practices);
+    const requests = useAppSelector(state => state.assets.requests);
+    const companies = useAppSelector(state => state.assets.companies);
+
     useEffect(() => {
         if (!companies || !practices || !requests) {
             return;
@@ -29,15 +30,21 @@ const RequestsPage = () => {
         const newJoinedRequests = requests.map(request => {
             const companyId = request.company_id;
             const company = companies.find(company => company.company_id === companyId);
-            const practice = practices.find(practice => practice.company_id === companyId );
+            const practice = practices.find(practice => practice.company_id === companyId);
 
             return { ...request, ...company, ...practice };
         }).filter(request => request.status !== 'saved');
 
-        setJoinedRequests(newJoinedRequests);
+        // Упорядочиваем карточки по статусам: accepted, pending, rejected
+        const sortedRequests = newJoinedRequests.sort((a, b) => {
+            if (a.status === 'accepted') return -1;
+            if (a.status === 'pending' && b.status !== 'accepted') return -1;
+            return 1;
+        });
+
+        setJoinedRequests(sortedRequests);
     }, [companies, practices, requests, isLoading]);
 
-    console.log("joinedrequests", joinedRequests)
     return (
         <div>
             <Navbar />
@@ -51,11 +58,13 @@ const RequestsPage = () => {
                         {joinedRequests && joinedRequests.length > 0 ? (
                             joinedRequests.map((request) => (
                                 <Col span={8} key={request.id}>
-                                    <RequestStatusCard request={request} />
+                                    <RequestCard request={request} />
                                 </Col>
                             ))
                         ) : (
-                            <div>Нет доступных запросов</div>
+                            <div style={{ textAlign: "center", fontSize: "18px", marginTop: "24px" }}>
+                                Нет доступных запросов
+                            </div>
                         )}
                     </Row>
                 </div>

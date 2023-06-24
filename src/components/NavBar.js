@@ -4,6 +4,7 @@ import { Layout, Menu, Button, Space } from 'antd';
 import {HomeOutlined, FileDoneOutlined, FileSearchOutlined, FileAddOutlined, BookOutlined} from '@ant-design/icons';
 import { logout } from "../store/slice/auth";
 import {useAppDispatch, useAppSelector, useAuth} from "../utils/hook";
+import {resetState} from "../store/slice/assets";
 
 const { Header } = Layout;
 
@@ -15,6 +16,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(logout());
+        dispatch(resetState())
         navigate('/login');
     };
 
@@ -42,6 +44,13 @@ const Navbar = () => {
                         </Menu.Item>
                         <Menu.Item key="form-page" icon={<FileAddOutlined />}>
                             <Link to="/form-page">Добавить компанию</Link>
+                        </Menu.Item>
+                    </>
+                )}
+                {role === 'university' && (
+                    <>
+                        <Menu.Item key="registration" icon={<FileAddOutlined />}>
+                            <Link to="/registration">регистрация пользователей</Link>
                         </Menu.Item>
                     </>
                 )}

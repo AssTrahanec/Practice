@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {instanceAuth} from "../../../utils/axios";
+import axios from "axios";
 
 export const getCompanies = createAsyncThunk(
     'companies/getAll',
@@ -12,6 +13,22 @@ export const getCompanies = createAsyncThunk(
         }
     }
 );
+export const signUp = createAsyncThunk(
+    'auth/signup',
+    async (user, { rejectWithValue }) => {
+        try {
+            const response = await instanceAuth.post('/auth/sign-up', user);
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+);
+
 export const getCompanyOfCurrentUser = createAsyncThunk(
     'companies/id',
     async (_, { rejectWithValue }) => {

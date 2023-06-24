@@ -11,6 +11,7 @@ import {useAuth} from "./utils/hook";
 import StudentSummary from "./components/ResumeForm";
 import ResumeForm from "./components/ResumeForm";
 import ResumePage from "./pages/ResumePage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 const AppRouter = () => {
     const { isAuthenticated, role } = useAuth();
@@ -21,6 +22,7 @@ const AppRouter = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/" element={<PrivateRoute isAuthenticated={isAuthenticated} role={role}><HomePage /></PrivateRoute>} />
+            <Route path="/registration" element={<PrivateRoute isAuthenticated={isAuthenticated} role={role}><RegistrationPage /></PrivateRoute>} />
             <Route path="/apply-practice-status" element={<PrivateRoute isAuthenticated={isAuthenticated} role={role}><ApplyPracticeStatusPage /></PrivateRoute>} />
             <Route path="/form-page" element={<PrivateRoute isAuthenticated={isAuthenticated} role={role}><CompanyFormPage /></PrivateRoute>} />
             <Route path="/student-requests" element={<PrivateRoute isAuthenticated={isAuthenticated} role={role}><StudentListPage /></PrivateRoute>} />

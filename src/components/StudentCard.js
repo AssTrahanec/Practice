@@ -14,7 +14,7 @@ const StudentCard = ({ student, onAccept, onReject }) => {
             style={{ marginBottom: 16, backgroundColor: student.status === 'rejected' ? '#ffe6e6' : 'white' }}
             actions={student.status === 'accepted' ? [<Tag color="green">Accepted</Tag>] : []}
         >
-            <p>Specialty: {student.speciality}</p>
+            <p>Specialty: {student.specialty}</p>
             <p>AvgMark: {student.avg_mark}</p>
             <p>Email: {student.student_email}</p>
             <p>Phone: {student.student_phone_number}</p>
